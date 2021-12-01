@@ -6,25 +6,34 @@ BLACK = (0, 0, 0)
 
 size = [400, 400]
 screen = pygame.display.set_mode(size)
-font = pygame.font.SysFont("asdf", 20)
+font = pygame.font.SysFont("consolas", 20)
 
 pygame.display.set_caption("Quadstep simulaion")
 
 clock = pygame.time.Clock()
 end = False
-
-xpos = 250
-ypos = 250
-xspeed = 5
-yspeed = 5
+frame = 0
 
 
 def printtext(msg, color=BLACK, pos=(50, 50)):
-    textSurface = font.render(msg, True, pygame.Color(color), None)
-    textRect = textSurface.get_rect()
-    textRect.topleft = pos
+    textsurface = font.render(msg, True, pygame.Color(color), None)
+    textrect = textsurface.get_rect()
+    textrect.topleft = pos
 
-    screen.blit(textSurface, textRect)
+    screen.blit(textsurface, textrect)
+
+
+screen.fill([227, 255, 250])
+printtext("Check Python Prompt First")
+pygame.display.flip()
+
+selected_frame = int(input("process until frame#: "))
+xpos = float(input("start x position: "))
+ypos = float(input("start y position: "))
+xspeed = float(input("start xspeed value: "))
+yspeed = float(input("start yspeed value: "))
+xspeedchange = float(input("xspeed change per frame value: "))
+yspeedchange = float(input("yspeed change per frame value: "))
 
 while end == False:
     clock.tick(30)
@@ -38,7 +47,8 @@ while end == False:
 
     screen.fill([227, 255, 250])
 
-    printtext("xpos: " + str(xpos))
+    printtext("frame: " + str(frame), 'BLACK', (50, 30))
+    printtext("xpos: " + str(xpos), 'BLACK', (50, 50))
     printtext("ypos: " + str(ypos), 'BLACK', (50, 70))
     printtext("xspeed: " + str(xspeed), 'BLACK', (50, 90))
     printtext("yspeed: " + str(yspeed), 'BLACK', (50, 110))
@@ -48,11 +58,13 @@ while end == False:
 
     xpos = xpos + xspeed
     ypos = ypos + yspeed
-    xspeed = xspeed - 0.5
-    yspeed = yspeed - 0.5
+    xspeed = xspeed + xspeedchange
+    yspeed = yspeed + yspeedchange
 
-    if xpos < 0 and ypos < 0:
+    if frame == selected_frame:
         end = True
+    else:
+        frame = frame + 1
 
     pygame.display.flip()
 
