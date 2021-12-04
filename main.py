@@ -35,8 +35,7 @@ yspeed = float(input("start yspeed value: "))
 xspeedchange = float(input("xspeed change per frame value: "))
 yspeedchange = float(input("yspeed change per frame value: "))
 
-
-while end == False:
+while not end:
     clock.tick(30)
 
 #    if end == True:
@@ -55,7 +54,7 @@ while end == False:
     printtext("yspeed: " + str(yspeed), 'BLACK', (50, 110))
 
 #    rect(on what, color, [xposition, yposition, xsize, ysize], line width:null to fill)
-    pygame.draw.rect(screen, [0, 0, 0], [xpos, ypos, size, size], 1)
+    pygame.draw.rect(screen, [0, 0, 0], [xpos, ypos, 20, 20], 1)
 
     xpos = xpos + xspeed
     ypos = ypos + yspeed
