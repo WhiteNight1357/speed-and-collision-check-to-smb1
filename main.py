@@ -35,7 +35,7 @@ yspeed = float(input("start yspeed value: "))
 xspeedchange = float(input("xspeed change per frame value: "))
 yspeedchange = float(input("yspeed change per frame value: "))
 
-while end == False:
+while not end:
     clock.tick(30)
 
 #    if end == True:
