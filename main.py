@@ -64,21 +64,21 @@ while not end:
         frame = frame + 1
 
     # collision check
-    if wallxstart - size < xpos < wallxstart + wallxwidth + size \
-       and\
-       wallystart - size < ypos < wallystart + wallywidth + size:
-        if xspeed >= 0:
-            xpos = wallxstart - size
-            xspeed = 0
-        if xspeed < 0:
-            xpos = wallxstart + wallxwidth + size
-            xspeed = 0
-        if yspeed >= 0:
-            ypos = wallystart - size
-            yspeed = 0
-        if yspeed < 0:
-            ypos = wallystart + wallywidth + size
-            yspeed = 0
+    # if wallxstart - size < xpos < wallxstart + wallxwidth + size \
+    #    and\
+    #    wallystart - size < ypos < wallystart + wallywidth + size:
+    #     if xspeed >= 0:
+    #         xpos = wallxstart - size
+    #         xspeed = 0
+    #     if xspeed < 0:
+    #         xpos = wallxstart + wallxwidth + size
+    #         xspeed = 0
+    #     if yspeed >= 0:
+    #         ypos = wallystart - size
+    #        yspeed = 0
+    #     if yspeed < 0:
+    #         ypos = wallystart + wallywidth + size
+    #         yspeed = 0
 
     # print debug info
     printtext("frame: " + str(frame), 'BLACK', (50, 30))
@@ -90,7 +90,7 @@ while not end:
     # draw wall and player
     # rect(on what, color, [xposition, yposition, xsize, ysize], line width:null to fill)
     pygame.draw.rect(screen, [130, 130, 130], [wallxstart, wallystart, wallxwidth, wallywidth])
-    pygame.draw.rect(screen, [0, 0, 0], [xpos, ypos, 20, 20], 1)
+    pygame.draw.rect(screen, [0, 0, 0], [xpos, ypos, 20, 20])
 
     pygame.display.flip()
 
