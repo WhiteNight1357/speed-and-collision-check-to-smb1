@@ -67,13 +67,13 @@ while not end:
     if wallxstart - size < xpos < wallxstart + wallxwidth + size \
        and\
        wallystart - size < ypos < wallystart + wallywidth + size:
-        if xspeed >= 0:
+        if xspeed > 0:
             xpos = wallxstart - size
             xspeed = 0
         if xspeed < 0:
             xpos = wallxstart + wallxwidth + size
             xspeed = 0
-        if yspeed >= 0:
+        if yspeed > 0:
             ypos = wallystart - size
             yspeed = 0
         if yspeed < 0:
