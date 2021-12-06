@@ -28,13 +28,13 @@ printtext("Check Python Prompt First")
 pygame.display.flip()
 
 size = 20
-selected_frame = 90  # int(input("process until frame#: "))
-xpos = 100 - size  # float(input("start x position: "))
-ypos = 200 - size  # float(input("start y position: "))
-xspeed = 3  # float(input("start xspeed value: "))
-yspeed = 0  # float(input("start yspeed value: "))
-xspeedchange = 0  # float(input("xspeed change per frame value: "))
-yspeedchange = 0  # float(input("yspeed change per frame value: "))
+selected_frame = int(input("process until frame#: "))
+xpos = float(input("start x position: ")) - (size / 2)
+ypos = float(input("start y position: ")) - (size / 2)
+xspeed = float(input("start xspeed value: "))
+yspeed = float(input("start yspeed value: "))
+xspeedchange = float(input("xspeed change per frame value: "))
+yspeedchange = float(input("yspeed change per frame value: "))
 wallxstart = 300
 wallystart = 100
 wallxwidth = 50
@@ -62,23 +62,6 @@ while not end:
         end = True
     else:
         frame = frame + 1
-
-    # collision check
-    # if wallxstart - size < xpos < wallxstart + wallxwidth + size \
-    #    and\
-    #    wallystart - size < ypos < wallystart + wallywidth + size:
-    #     if xspeed >= 0:
-    #         xpos = wallxstart - size
-    #         xspeed = 0
-    #     if xspeed < 0:
-    #         xpos = wallxstart + wallxwidth + size
-    #         xspeed = 0
-    #     if yspeed >= 0:
-    #         ypos = wallystart - size
-    #        yspeed = 0
-    #     if yspeed < 0:
-    #         ypos = wallystart + wallywidth + size
-    #         yspeed = 0
 
     # print debug info
     printtext("frame: " + str(frame), 'BLACK', (50, 30))
