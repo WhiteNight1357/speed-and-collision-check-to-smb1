@@ -29,22 +29,20 @@ pygame.display.flip()
 
 size = 20
 selected_frame = int(input("process until frame#: "))
-xpos = float(input("start x position: ")) - (size / 2)
-ypos = float(input("start y position: ")) - (size / 2)
+xpos = float(input("start x position: "))
+ypos = float(input("start y position: "))
 xspeed = float(input("start xspeed value: "))
 yspeed = float(input("start yspeed value: "))
 xspeedchange = float(input("xspeed change per frame value: "))
 yspeedchange = float(input("yspeed change per frame value: "))
-wallxstart = 300
-wallystart = 100
-wallxwidth = 50
-wallywidth = 200
+wallxstart = 0
+wallystart = 0
+wallxwidth = 0
+wallywidth = 0
 
 while not end:
     clock.tick(30)
 
-    # if end == True:
-    #     break
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             end = True
