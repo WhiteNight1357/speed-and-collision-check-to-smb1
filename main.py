@@ -34,28 +34,38 @@ wallywidth = 0
 debugging = False
 
 while not end:
-    clock.tick(30)
+    # set framerate
+    clock.tick(60)
 
+    # event check
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             end = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_F1 and not debugging:
                 debugging = True
-            elif event.key == pygame.K_F1:
+            elif event.key == pygame.K_F1 and debugging:
                 debugging = False
-            if event.key == pygame.K_UP:
-                yspeed = -3
-            elif event.key == pygame.K_DOWN:
-                yspeed = 3
-            else:
-                yspeed = 0
-            if event.key == pygame.K_LEFT:
-                xspeed = -3
-            elif event.key == pygame.K_RIGHT:
-                xspeed = 3
-            else:
-                xspeed = 0
+
+    # get keyboard input
+    keys = pygame.key.get_pressed()
+
+    if not keys[pygame.K_UP] and not keys[pygame.K_DOWN]:
+        yspeed = 0
+    elif keys[pygame.K_UP]:
+        yspeed = -3
+    elif keys[pygame.K_DOWN]:
+        yspeed = 3
+    else:
+        yspeed = 0
+    if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+        xspeed = 0
+    elif keys[pygame.K_LEFT]:
+        xspeed = -3
+    elif keys[pygame.K_RIGHT]:
+        xspeed = 3
+    else:
+        xspeed = 0
 
     # draw background
     screen.fill([227, 255, 250])
