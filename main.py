@@ -104,7 +104,6 @@ while not end:
             yspeed = 0
 
     # print debug info
-    printtext("frame: " + str(frame), 'BLACK', (50, 30))
     printtext("xpos: " + str(xpos), 'BLACK', (50, 50))
     printtext("ypos: " + str(ypos), 'BLACK', (50, 70))
     printtext("xspeed: " + str(xspeed), 'BLACK', (50, 90))
