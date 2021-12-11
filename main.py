@@ -22,15 +22,17 @@ def printtext(msg, color=BLACK, pos=(50, 50)):
     screen.blit(textsurface, textrect)
 
 
+player = pygame.image.load("resource/player.png")
+
 size = 20
-xpos = 200
-ypos = 200
+xpos = 0
+ypos = 0
 xspeed = 0
 yspeed = 0
-wallxstart = 0
-wallystart = 0
-wallxwidth = 0
-wallywidth = 0
+wallxstart = 150
+wallystart = 150
+wallxwidth = 100
+wallywidth = 100
 debugging = False
 
 while not end:
@@ -74,18 +76,6 @@ while not end:
     xpos = xpos + xspeed
     ypos = ypos + yspeed
 
-    # print debug info
-    if debugging:
-        printtext("xpos: " + str(xpos), 'BLACK', (50, 50))
-        printtext("ypos: " + str(ypos), 'BLACK', (50, 70))
-        printtext("xspeed: " + str(xspeed), 'BLACK', (50, 90))
-        printtext("yspeed: " + str(yspeed), 'BLACK', (50, 110))
-
-    # draw wall and player
-    # rect(on what, color, [xposition, yposition, xsize, ysize], line width:null to fill)
-    pygame.draw.rect(screen, [130, 130, 130], [wallxstart, wallystart, wallxwidth, wallywidth])
-    pygame.draw.rect(screen, [0, 0, 0], [xpos, ypos, 20, 20])
-
     # collision check
     if wallxstart - size < xpos < wallxstart + wallxwidth \
        and\
@@ -104,15 +94,16 @@ while not end:
             yspeed = 0
 
     # print debug info
-    printtext("xpos: " + str(xpos), 'BLACK', (50, 50))
-    printtext("ypos: " + str(ypos), 'BLACK', (50, 70))
-    printtext("xspeed: " + str(xspeed), 'BLACK', (50, 90))
-    printtext("yspeed: " + str(yspeed), 'BLACK', (50, 110))
+    if debugging:
+        printtext("xpos: " + str(xpos), 'BLACK', (50, 50))
+        printtext("ypos: " + str(ypos), 'BLACK', (50, 70))
+        printtext("xspeed: " + str(xspeed), 'BLACK', (50, 90))
+        printtext("yspeed: " + str(yspeed), 'BLACK', (50, 110))
 
     # draw wall and player
     # rect(on what, color, [xposition, yposition, xsize, ysize], line width:null to fill)
     pygame.draw.rect(screen, [130, 130, 130], [wallxstart, wallystart, wallxwidth, wallywidth])
-    pygame.draw.rect(screen, [0, 0, 0], [xpos, ypos, 20, 20], 1)
+    screen.blit(player, (xpos, ypos))
 
     pygame.display.flip()
 
