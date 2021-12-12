@@ -4,7 +4,8 @@ pygame.init()
 
 BLACK = (0, 0, 0)
 
-size = [400, 400]
+pxsize = 2
+size = [256 * pxsize, 240 * pxsize]
 screen = pygame.display.set_mode(size)
 font = pygame.font.SysFont("consolas", 20)
 
@@ -24,7 +25,7 @@ def printtext(msg, color=BLACK, pos=(50, 50)):
 
 player = pygame.image.load("resource/player.png")
 
-size = 20
+size = 8 * pxsize
 xpos = 0
 ypos = 0
 xspeed = 0
@@ -101,7 +102,6 @@ while not end:
         printtext("yspeed: " + str(yspeed), 'BLACK', (50, 110))
 
     # draw wall and player
-    # rect(on what, color, [xposition, yposition, xsize, ysize], line width:null to fill)
     pygame.draw.rect(screen, [130, 130, 130], [wallxstart, wallystart, wallxwidth, wallywidth])
     screen.blit(player, (xpos, ypos))
 
