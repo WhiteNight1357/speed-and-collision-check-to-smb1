@@ -25,6 +25,8 @@ realxspeed = "0x0000"
 realyspeed = "0x0000"
 beforejumpxspeed = "0x0000"
 ledgerunoffspeed = "0x0000"
+pxxpos = 0
+pxypos = 0
 wallxstart = 0
 wallystart = 400
 wallxwidth = 512
@@ -45,6 +47,8 @@ def jump():
     global realxspeed
     global realyspeed
     global beforejumpxspeed
+    global on_ground
+    on_ground = False
     if abs(int(realxspeed, 16)) < int("0x1000", 16):
         realyspeed = "-0x4000"
         beforejumpxspeed = realxspeed
@@ -137,16 +141,15 @@ while not end:
         ledgerunoffspeed = "0x0000"
         on_ground = False
 
-    # draw background
-    screen.fill([227, 255, 250])
-
     # change value
     realxspeed = fillnull(realxspeed)
     realyspeed = fillnull(realyspeed)
     xspeed = int(realxspeed[0:-3], 16)
     yspeed = int(realyspeed[0:-3], 16)
-    xpos = (xpos / pxsize + xspeed) * pxsize
-    ypos = (ypos / pxsize + yspeed) * pxsize
+    pxxpos = pxxpos + xspeed
+    pxypos = pxypos + yspeed
+    xpos = pxxpos * pxsize
+    ypos = pxypos * pxsize
 
     # collision check
     if wallxstart - size < xpos < wallxstart + wallxwidth \
@@ -165,6 +168,9 @@ while not end:
         if yspeed < 0:
             ypos = wallystart + wallywidth
             yspeed = 0
+
+    # draw background
+    screen.fill([227, 255, 250])
 
     # print debug info
     if debugging:
