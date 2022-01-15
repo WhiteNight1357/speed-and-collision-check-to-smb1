@@ -79,6 +79,31 @@ def y_psysics(holding_a):
             realyspeed = hex(int(realyspeed, 16) + int("0x0900", 16))
 
 
+def x_psysics(pressed_key, in_air):
+    global realxspeed
+    global beforejumpxspeed
+    if pressed_key[pygame.K_d] and not pressed_key[pygame.K_j] and not in_air:
+        if int(realxspeed, 16) >= 0:
+            realxspeed = hex(int(realxspeed, 16) + int("0x0130", 16))
+            if int(realxspeed, 16) > int("0x1900", 16):
+                realxspeed = "0x1900"
+        elif int(realxspeed, 16) < 0:
+            realxspeed = hex(int(realxspeed, 16) + int("0x01a0", 16))
+    elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_j] and not in_air:
+        if int(realxspeed, 16) <= 0:
+            realxspeed = hex(int(realxspeed, 16) - int("0x0130", 16))
+            if int(realxspeed, 16) < int("-0x1900", 16):
+                realxspeed = "-0x1900"
+        elif int(realxspeed, 16) > 0:
+            realxspeed = hex(int(realxspeed, 16) - int("0x01a0", 16))
+    elif not pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and not in_air:
+        if not abs(int(realxspeed, 16)) < int("0x0100", 16):
+            if int(realxspeed, 16) > 0:
+                realxspeed = hex(int(realxspeed, 16) - int("0x00d0", 16))
+            elif int(realxspeed, 16) < 0:
+                realxspeed = hex(int(realxspeed, 16) + int("0x00d0", 16))
+
+
 def fillnull(hexvalue):
     if len(hexvalue) == 3 and int(hexvalue, 16) > 0:
         hexvalue = hexvalue[:2] + "000" + hexvalue[2:]
@@ -114,14 +139,7 @@ while not end:
     # get keyboard input
     keys = pygame.key.get_pressed()
 
-    if not keys[pygame.K_a] and not keys[pygame.K_d]:
-        xspeed = 0
-    elif keys[pygame.K_a] and keys[pygame.K_d]:
-        xspeed = 0
-    elif keys[pygame.K_a]:
-        xspeed = -3
-    elif keys[pygame.K_d]:
-        xspeed = 3
+    x_psysics(keys, not on_ground)
 
     if keys[pygame.K_k] and on_ground:
         jump()
@@ -142,6 +160,8 @@ while not end:
         on_ground = False
 
     # change value
+    realyspeed = "0x0000"
+    on_ground = True
     realxspeed = fillnull(realxspeed)
     realyspeed = fillnull(realyspeed)
     xspeed = int(realxspeed[0:-3], 16)
@@ -152,22 +172,22 @@ while not end:
     ypos = pxypos * pxsize
 
     # collision check
-    if wallxstart - size < xpos < wallxstart + wallxwidth \
-       and\
-       wallystart - size < ypos < wallystart + wallywidth:
-        if xspeed > 0:
-            xpos = wallxstart - size
-            xspeed = 0
-        if xspeed < 0:
-            xpos = wallxstart + wallxwidth
-            xspeed = 0
-        if yspeed > 0:
-            ypos = wallystart - size
-            yspeed = 0
-            on_ground = True
-        if yspeed < 0:
-            ypos = wallystart + wallywidth
-            yspeed = 0
+#    if wallxstart - size < xpos < wallxstart + wallxwidth \
+#       and\
+#       wallystart - size < ypos < wallystart + wallywidth:
+#        if xspeed > 0:
+#            xpos = wallxstart - size
+#            xspeed = 0
+#        if xspeed < 0:
+#            xpos = wallxstart + wallxwidth
+#            xspeed = 0
+#        if yspeed > 0:
+#            ypos = wallystart - size
+#            yspeed = 0
+#            on_ground = True
+#        if yspeed < 0:
+#            ypos = wallystart + wallywidth
+#            yspeed = 0
 
     # draw background
     screen.fill([227, 255, 250])
