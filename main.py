@@ -19,14 +19,14 @@ player = pygame.image.load("resource/player.png")
 size = 16 * pxsize
 xpos = 0
 ypos = 0
-xspeed = 0
-yspeed = 0
-realxspeed = "0x0000"
-realyspeed = "0x0000"
+hexxspeed = "0x0000"
+hexyspeed = "0x0000"
 beforejumpxspeed = "0x0000"
 ledgerunoffspeed = "0x0000"
 pxxpos = 0
 pxypos = 0
+hexxpos = "0x0000"
+hexypos = "0x0000"
 wallxstart = 0
 wallystart = 400
 wallxwidth = 512
@@ -44,64 +44,64 @@ def printtext(msg, color=BLACK, pos=(50, 50)):
 
 
 def jump():
-    global realxspeed
-    global realyspeed
+    global hexxspeed
+    global hexyspeed
     global beforejumpxspeed
     global on_ground
     on_ground = False
-    if abs(int(realxspeed, 16)) < int("0x1000", 16):
-        realyspeed = "-0x4000"
-        beforejumpxspeed = realxspeed
-    elif int("0x1000", 16) <= abs(int(realxspeed, 16)) <= int("0x24ff", 16):
-        realyspeed = "-0x4000"
-        beforejumpxspeed = realxspeed
-    elif int("0x2500") <= abs(int(realxspeed, 16)):
-        realyspeed = "-0x5000"
-        beforejumpxspeed = realxspeed
+    if abs(int(hexxspeed, 16)) < int("0x1000", 16):
+        hexyspeed = "-0x4000"
+        beforejumpxspeed = hexxspeed
+    elif int("0x1000", 16) <= abs(int(hexxspeed, 16)) <= int("0x24ff", 16):
+        hexyspeed = "-0x4000"
+        beforejumpxspeed = hexxspeed
+    elif int("0x2500") <= abs(int(hexxspeed, 16)):
+        hexyspeed = "-0x5000"
+        beforejumpxspeed = hexxspeed
 
 
 def y_psysics(holding_a):
-    global realyspeed
+    global hexyspeed
     global beforejumpxspeed
-    if int(realyspeed, 16) > 0 and holding_a:
+    if int(hexyspeed, 16) > 0 and holding_a:
         if abs(int(beforejumpxspeed, 16)) < int("0x1000", 16):
-            realyspeed = hex(int(realyspeed, 16) + int("0x0200", 16))
+            hexyspeed = hex(int(hexyspeed, 16) + int("0x0200", 16))
         if int("0x1000", 16) <= abs(int(beforejumpxspeed, 16)) <= int("0x24ff", 16):
-            realyspeed = hex(int(realyspeed, 16) + int("0x01e0", 16))
+            hexyspeed = hex(int(hexyspeed, 16) + int("0x01e0", 16))
         if int("0x2500", 16) <= abs(int(beforejumpxspeed, 16)):
-            realyspeed = hex(int(realyspeed, 16) + int("0x0280", 16))
+            hexyspeed = hex(int(hexyspeed, 16) + int("0x0280", 16))
     else:
         if abs(int(beforejumpxspeed, 16)) < int("0x1000", 16):
-            realyspeed = hex(int(realyspeed, 16) + int("0x0700", 16))
+            hexyspeed = hex(int(hexyspeed, 16) + int("0x0700", 16))
         if int("0x1000", 16) <= abs(int(beforejumpxspeed, 16)) <= int("0x24ff", 16):
-            realyspeed = hex(int(realyspeed, 16) + int("0x0600", 16))
+            hexyspeed = hex(int(hexyspeed, 16) + int("0x0600", 16))
         if int("0x2500", 16) <= abs(int(beforejumpxspeed, 16)):
-            realyspeed = hex(int(realyspeed, 16) + int("0x0900", 16))
+            hexyspeed = hex(int(hexyspeed, 16) + int("0x0900", 16))
 
 
 def x_psysics(pressed_key, in_air):
-    global realxspeed
+    global hexxspeed
     global beforejumpxspeed
     if pressed_key[pygame.K_d] and not pressed_key[pygame.K_j] and not in_air:
-        if int(realxspeed, 16) >= 0:
-            realxspeed = hex(int(realxspeed, 16) + int("0x0130", 16))
-            if int(realxspeed, 16) > int("0x1900", 16):
-                realxspeed = "0x1900"
-        elif int(realxspeed, 16) < 0:
-            realxspeed = hex(int(realxspeed, 16) + int("0x01a0", 16))
+        if int(hexxspeed, 16) >= 0:
+            hexxspeed = hex(int(hexxspeed, 16) + int("0x0130", 16))
+            if int(hexxspeed, 16) > int("0x1900", 16):
+                hexxspeed = "0x1900"
+        elif int(hexxspeed, 16) < 0:
+            hexxspeed = hex(int(hexxspeed, 16) + int("0x01a0", 16))
     elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_j] and not in_air:
-        if int(realxspeed, 16) <= 0:
-            realxspeed = hex(int(realxspeed, 16) - int("0x0130", 16))
-            if int(realxspeed, 16) < int("-0x1900", 16):
-                realxspeed = "-0x1900"
-        elif int(realxspeed, 16) > 0:
-            realxspeed = hex(int(realxspeed, 16) - int("0x01a0", 16))
+        if int(hexxspeed, 16) <= 0:
+            hexxspeed = hex(int(hexxspeed, 16) - int("0x0130", 16))
+            if int(hexxspeed, 16) < int("-0x1900", 16):
+                hexxspeed = "-0x1900"
+        elif int(hexxspeed, 16) > 0:
+            hexxspeed = hex(int(hexxspeed, 16) - int("0x01a0", 16))
     elif not pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and not in_air:
-        if not abs(int(realxspeed, 16)) < int("0x0100", 16):
-            if int(realxspeed, 16) > 0:
-                realxspeed = hex(int(realxspeed, 16) - int("0x00d0", 16))
-            elif int(realxspeed, 16) < 0:
-                realxspeed = hex(int(realxspeed, 16) + int("0x00d0", 16))
+        if not abs(int(hexxspeed, 16)) < int("0x0100", 16):
+            if int(hexxspeed, 16) > 0:
+                hexxspeed = hex(int(hexxspeed, 16) - int("0x00d0", 16))
+            elif int(hexxspeed, 16) < 0:
+                hexxspeed = hex(int(hexxspeed, 16) + int("0x00d0", 16))
 
 
 def fillnull(hexvalue):
@@ -153,21 +153,30 @@ while not end:
         ypos = 0
         xspeed = 0
         yspeed = 0
-        realxspeed = "0x0000"
-        realyspeed = "0x0000"
+        hexxspeed = "0x0000"
+        hexyspeed = "0x0000"
         beforejumpxspeed = "0x0000"
         ledgerunoffspeed = "0x0000"
         on_ground = False
 
     # change value
-    realyspeed = "0x0000"
+    hexyspeed = "0x0000"
     on_ground = True
-    realxspeed = fillnull(realxspeed)
-    realyspeed = fillnull(realyspeed)
-    xspeed = int(realxspeed[0:-3], 16)
-    yspeed = int(realyspeed[0:-3], 16)
-    pxxpos = pxxpos + xspeed
-    pxypos = pxypos + yspeed
+
+    hexxspeed = fillnull(hexxspeed)
+    hexyspeed = fillnull(hexyspeed)
+
+    if not int(hexxspeed[0:-2], 16) == 0:
+        hexxpos = hex(int(hexxpos, 16) + int(hexxspeed, 16))
+    if not int(hexyspeed[0:-2], 16) == 0:
+        hexypos = hex(int(hexypos, 16) + int(hexyspeed, 16))
+
+    hexxpos = fillnull(hexxpos)
+    hexypos = fillnull(hexypos)
+
+    pxxpos = int(hexxpos[0:-3], 16)
+    pxypos = int(hexypos[0:-3], 16)
+
     xpos = pxxpos * pxsize
     ypos = pxypos * pxsize
 
@@ -194,10 +203,12 @@ while not end:
 
     # print debug info
     if debugging:
-        printtext("xpos: " + str(xpos), 'BLACK', (50, 50))
-        printtext("ypos: " + str(ypos), 'BLACK', (50, 70))
-        printtext("xspeed: " + str(xspeed), 'BLACK', (50, 90))
-        printtext("yspeed: " + str(yspeed), 'BLACK', (50, 110))
+        printtext("pxxpos: " + str(pxxpos), 'BLACK', (50, 50))
+        printtext("pxypos: " + str(pxypos), 'BLACK', (50, 70))
+        printtext("hexxpos: " + hexxpos, 'BLACK', (50, 90))
+        printtext("hexypos: " + hexypos, 'BLACK', (50, 110))
+        printtext("hexxspeed: " + hexxspeed, 'BLACK', (50, 130))
+        printtext("hexyspeed: " + hexyspeed, 'BLACK', (50, 150))
 
     # draw wall and player
     pygame.draw.rect(screen, [130, 130, 130], [wallxstart, wallystart, wallxwidth, wallywidth])
