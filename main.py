@@ -84,14 +84,14 @@ def x_psysics(pressed_key, in_air):
     global beforejumpxspeed
     if pressed_key[pygame.K_d] and not pressed_key[pygame.K_j] and not in_air:
         if int(hexxspeed, 16) >= 0:
-            hexxspeed = hex(int(hexxspeed, 16) + int("0x0130", 16))
+            hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
             if int(hexxspeed, 16) > int("0x1900", 16):
                 hexxspeed = "0x1900"
         elif int(hexxspeed, 16) < 0:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x01a0", 16))
     elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_j] and not in_air:
         if int(hexxspeed, 16) <= 0:
-            hexxspeed = hex(int(hexxspeed, 16) - int("0x0130", 16))
+            hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
             if int(hexxspeed, 16) < int("-0x1900", 16):
                 hexxspeed = "-0x1900"
         elif int(hexxspeed, 16) > 0:
@@ -102,6 +102,11 @@ def x_psysics(pressed_key, in_air):
                 hexxspeed = hex(int(hexxspeed, 16) - int("0x00d0", 16))
             elif int(hexxspeed, 16) < 0:
                 hexxspeed = hex(int(hexxspeed, 16) + int("0x00d0", 16))
+    if abs(int(hexxspeed, 16)) < int("0x0130", 16):
+        if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and not in_air:
+            hexxspeed = "0x0130"
+        if pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and not in_air:
+            hexxspeed = "-0x0130"
 
 
 def fillnull(hexvalue):
