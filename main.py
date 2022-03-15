@@ -1,3 +1,6 @@
+# all smb1 player physics source:
+# https://web.archive.org/web/20130807122227/http://i276.photobucket.com/albums/kk21/jdaster64/smb_playerphysics.png
+
 import pygame
 
 pygame.init()
@@ -60,7 +63,7 @@ def jump():
         beforejumpxspeed = hexxspeed
 
 
-def y_psysics(holding_a):
+def y_physics(holding_a):
     global hexyspeed
     global beforejumpxspeed
     if int(hexyspeed, 16) > 0 and holding_a:
@@ -79,9 +82,11 @@ def y_psysics(holding_a):
             hexyspeed = hex(int(hexyspeed, 16) + int("0x0900", 16))
 
 
-def x_psysics(pressed_key, in_air):
+def x_physics(pressed_key, in_air):
+
     global hexxspeed
     global beforejumpxspeed
+
     if pressed_key[pygame.K_d] and not pressed_key[pygame.K_j] and not in_air:
         if int(hexxspeed, 16) >= 0:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
@@ -89,6 +94,7 @@ def x_psysics(pressed_key, in_air):
                 hexxspeed = "0x1900"
         elif int(hexxspeed, 16) < 0:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x01a0", 16))
+
     elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_j] and not in_air:
         if int(hexxspeed, 16) <= 0:
             hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
@@ -96,17 +102,29 @@ def x_psysics(pressed_key, in_air):
                 hexxspeed = "-0x1900"
         elif int(hexxspeed, 16) > 0:
             hexxspeed = hex(int(hexxspeed, 16) - int("0x01a0", 16))
+
     elif not pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and not in_air:
         if not abs(int(hexxspeed, 16)) < int("0x0100", 16):
             if int(hexxspeed, 16) > 0:
                 hexxspeed = hex(int(hexxspeed, 16) - int("0x00d0", 16))
             elif int(hexxspeed, 16) < 0:
                 hexxspeed = hex(int(hexxspeed, 16) + int("0x00d0", 16))
-    if abs(int(hexxspeed, 16)) < int("0x0130", 16):
-        if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and not in_air:
+
+    if abs(int(hexxspeed, 16)) < int("0x0130", 16) and not in_air:
+        if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a]:
             hexxspeed = "0x0130"
-        if pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and not in_air:
+        if pressed_key[pygame.K_a] and not pressed_key[pygame.K_d]:
             hexxspeed = "-0x0130"
+
+    if in_air:   # midair deceleration not done yet
+        if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and int(hexxspeed, 16) >= int("0x1900", 16):
+            hexxspeed = hex(int(hexxspeed, 16) + int("0x00e4", 16))
+        elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and int(hexxspeed, 16) < int("0x1900", 16):
+            hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
+        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and int(hexxspeed, 16) <= int("-0x1900", 16):
+            hexxspeed = hex(int(hexxspeed, 16) - int("0x00e4", 16))
+        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and int(hexxspeed, 16) > int("-0x1900", 16):
+            hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
 
 
 def fillnull(hexvalue):
@@ -144,14 +162,14 @@ while not end:
     # get keyboard input
     keys = pygame.key.get_pressed()
 
-    x_psysics(keys, not on_ground)
+    x_physics(keys, not on_ground)
 
     if keys[pygame.K_k] and on_ground:
         jump()
     if keys[pygame.K_k] and not on_ground:
-        y_psysics(True)
+        y_physics(True)
     elif not keys[pygame.K_k] and not on_ground:
-        y_psysics(False)
+        y_physics(False)
 
     if debugging and keys[pygame.K_r]:
         xpos = 0
