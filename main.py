@@ -47,10 +47,12 @@ def printtext(msg, color=BLACK, pos=(50, 50)):
 
 
 def jump():
+
     global hexxspeed
     global hexyspeed
     global beforejumpxspeed
     global on_ground
+
     on_ground = False
     if abs(int(hexxspeed, 16)) < int("0x1000", 16):
         hexyspeed = "-0x4000"
@@ -64,8 +66,10 @@ def jump():
 
 
 def y_physics(holding_a):
+
     global hexyspeed
     global beforejumpxspeed
+
     if int(hexyspeed, 16) > 0 and holding_a:
         if abs(int(beforejumpxspeed, 16)) < int("0x1000", 16):
             hexyspeed = hex(int(hexyspeed, 16) + int("0x0200", 16))
@@ -87,7 +91,7 @@ def x_physics(pressed_key, in_air):
     global hexxspeed
     global beforejumpxspeed
 
-    if pressed_key[pygame.K_d] and not pressed_key[pygame.K_j] and not in_air:
+    if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and not pressed_key[pygame.K_j] and not in_air:
         if int(hexxspeed, 16) >= 0:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
             if int(hexxspeed, 16) > int("0x1900", 16):
@@ -95,7 +99,7 @@ def x_physics(pressed_key, in_air):
         elif int(hexxspeed, 16) < 0:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x01a0", 16))
 
-    elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_j] and not in_air:
+    elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and not pressed_key[pygame.K_j] and not in_air:
         if int(hexxspeed, 16) <= 0:
             hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
             if int(hexxspeed, 16) < int("-0x1900", 16):
@@ -116,18 +120,41 @@ def x_physics(pressed_key, in_air):
         if pressed_key[pygame.K_a] and not pressed_key[pygame.K_d]:
             hexxspeed = "-0x0130"
 
-    if in_air:   # midair deceleration not done yet
+    if in_air:
+
         if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and int(hexxspeed, 16) >= int("0x1900", 16):
             hexxspeed = hex(int(hexxspeed, 16) + int("0x00e4", 16))
-        elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and int(hexxspeed, 16) < int("0x1900", 16):
+        elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and \
+                int("0x0", 16) <= int(hexxspeed, 16) < int("0x1900", 16):
             hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
+
         elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and int(hexxspeed, 16) <= int("-0x1900", 16):
             hexxspeed = hex(int(hexxspeed, 16) - int("0x00e4", 16))
-        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and int(hexxspeed, 16) > int("-0x1900", 16):
+        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and \
+                int("0x0", 16) > int(hexxspeed, 16) > int("-0x1900", 16):
+            hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
+
+        elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and int(hexxspeed, 16) <= int("-0x1900", 16):
+            hexxspeed = hex(int(hexxspeed, 16) + int("0x00e4", 16))
+        elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and \
+                int(hexxspeed, 16) > int("-0x1900", 16) and int(beforejumpxspeed, 16) <= int("-0x1d00", 16):
+            hexxspeed = hex(int(hexxspeed, 16) + int("0x00d0", 16))
+        elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and \
+                int(hexxspeed, 16) > int("-0x1900", 16) and int(beforejumpxspeed, 16) > int("-0x1d00", 16):
+            hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
+
+        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and int(hexxspeed, 16) >= int("0x1900", 16):
+            hexxspeed = hex(int(hexxspeed, 16) - int("0x00e4", 16))
+        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and \
+                int(hexxspeed, 16) < int("0x1900", 16) and int(beforejumpxspeed, 16) >= int("0x1d00", 16):
+            hexxspeed = hex(int(hexxspeed, 16) - int("0x00d0", 16))
+        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and \
+                int(hexxspeed, 16) < int("0x1900", 16) and int(beforejumpxspeed, 16) < int("0x1d00", 16):
             hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
 
 
 def fillnull(hexvalue):
+
     if len(hexvalue) == 3 and int(hexvalue, 16) > 0:
         hexvalue = hexvalue[:2] + "000" + hexvalue[2:]
     elif len(hexvalue) == 4 and int(hexvalue, 16) > 0:
@@ -142,10 +169,12 @@ def fillnull(hexvalue):
         hexvalue = hexvalue[:3] + "0" + hexvalue[3:]
     elif int(hexvalue, 16) == 0:
         hexvalue = "0x0000"
+
     return hexvalue
 
 
 while not end:
+
     # set framerate
     clock.tick(60)
 
@@ -184,7 +213,7 @@ while not end:
 
     # change value
     hexyspeed = "0x0000"
-    on_ground = True
+    on_ground = False
 
     hexxspeed = fillnull(hexxspeed)
     hexyspeed = fillnull(hexyspeed)
