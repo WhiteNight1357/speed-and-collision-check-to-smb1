@@ -152,6 +152,11 @@ def x_physics(pressed_key, in_air):
                 int(hexxspeed, 16) < int("0x1900", 16) and int(beforejumpxspeed, 16) < int("0x1d00", 16):
             hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
 
+        if int(hexxspeed, 16) <= int("-0x4800", 16):
+            hexxspeed = "-0x4000"
+        elif int(hexxspeed, 16) >= int("0x4800", 16):
+            hexxspeed = "0x4000"
+
 
 def fillnull(hexvalue):
 
@@ -212,9 +217,6 @@ while not end:
         on_ground = False
 
     # change value
-    hexyspeed = "0x0000"
-    on_ground = False
-
     hexxspeed = fillnull(hexxspeed)
     hexyspeed = fillnull(hexyspeed)
 
@@ -231,6 +233,12 @@ while not end:
 
     xpos = pxxpos * pxsize
     ypos = pxypos * pxsize
+
+    if pxypos > 180:
+        hexyspeed = "0x0000"
+        on_ground = True
+        pxypos = 180
+        hexypos = "0xb4000"
 
     # collision check
 #    if wallxstart - size < xpos < wallxstart + wallxwidth \
