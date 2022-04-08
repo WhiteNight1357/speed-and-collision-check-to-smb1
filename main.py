@@ -35,6 +35,7 @@ wallystart = 400
 wallxwidth = 512
 wallywidth = 100
 on_ground = False
+a_already_pressed = False
 debugging = False
 
 
@@ -60,7 +61,7 @@ def jump():
     elif int("0x1000", 16) <= abs(int(hexxspeed, 16)) <= int("0x24ff", 16):
         hexyspeed = "-0x4000"
         beforejumpxspeed = hexxspeed
-    elif int("0x2500") <= abs(int(hexxspeed, 16)):
+    elif int("0x2500", 16) <= abs(int(hexxspeed, 16)):
         hexyspeed = "-0x5000"
         beforejumpxspeed = hexxspeed
 
@@ -70,7 +71,7 @@ def y_physics(holding_a):
     global hexyspeed
     global beforejumpxspeed
 
-    if int(hexyspeed, 16) > 0 and holding_a:
+    if int(hexyspeed, 16) < 0 and holding_a:
         if abs(int(beforejumpxspeed, 16)) < int("0x1000", 16):
             hexyspeed = hex(int(hexyspeed, 16) + int("0x0200", 16))
         if int("0x1000", 16) <= abs(int(beforejumpxspeed, 16)) <= int("0x24ff", 16):
@@ -198,12 +199,16 @@ while not end:
 
     x_physics(keys, not on_ground)
 
-    if keys[pygame.K_k] and on_ground:
+    if keys[pygame.K_k] and on_ground and not a_already_pressed:
         jump()
+        a_already_pressed = True
     if keys[pygame.K_k] and not on_ground:
         y_physics(True)
     elif not keys[pygame.K_k] and not on_ground:
         y_physics(False)
+        a_already_pressed = False
+    elif not keys[pygame.K_k]:
+        a_already_pressed = False
 
     if debugging and keys[pygame.K_r]:
         xpos = 0
