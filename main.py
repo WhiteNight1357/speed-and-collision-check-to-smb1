@@ -30,10 +30,6 @@ pxxpos = 0
 pxypos = 0
 hexxpos = "0x0000"
 hexypos = "0x0000"
-wallxstart = 0
-wallystart = 400
-wallxwidth = 512
-wallywidth = 100
 on_ground = False
 a_already_pressed = False
 debugging = False
@@ -236,14 +232,14 @@ while not end:
     pxxpos = int(hexxpos[0:-3], 16)
     pxypos = int(hexypos[0:-3], 16)
 
-    xpos = pxxpos * pxsize
-    ypos = pxypos * pxsize
-
-    if pxypos > 180:
+    if pxypos > 180:   # future collision check /w tiles will go here
         hexyspeed = "0x0000"
         on_ground = True
         pxypos = 180
         hexypos = "0xb4000"
+
+    xpos = pxxpos * pxsize
+    ypos = pxypos * pxsize
 
     # collision check
 #    if wallxstart - size < xpos < wallxstart + wallxwidth \
@@ -275,8 +271,7 @@ while not end:
         printtext("hexxspeed: " + hexxspeed, 'BLACK', (50, 130))
         printtext("hexyspeed: " + hexyspeed, 'BLACK', (50, 150))
 
-    # draw wall and player
-    pygame.draw.rect(screen, [130, 130, 130], [wallxstart, wallystart, wallxwidth, wallywidth])
+    # draw player
     screen.blit(player, (xpos, ypos))
 
     pygame.display.flip()
