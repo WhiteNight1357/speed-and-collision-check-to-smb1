@@ -149,10 +149,14 @@ def x_physics(pressed_key, in_air):
                 int(hexxspeed, 16) < int("0x1900", 16) and int(beforejumpxspeed, 16) < int("0x1d00", 16):
             hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
 
-        if int(hexxspeed, 16) <= int("-0x4800", 16):
-            hexxspeed = "-0x4000"
-        elif int(hexxspeed, 16) >= int("0x4800", 16):
-            hexxspeed = "0x4000"
+        if int(beforejumpxspeed, 16) >= int("-0x1900", 16) > int(hexxspeed, 16):
+            hexxspeed = "-0x1900"
+        elif int(beforejumpxspeed, 16) <= int("0x1900", 16) < int(hexxspeed, 16):
+            hexxspeed = "0x1900"
+        elif int(beforejumpxspeed, 16) < int("-0x1900", 16) and int(hexxspeed, 16) < int("-0x2900", 16):
+            hexxspeed = "-0x2900"
+        elif int(beforejumpxspeed, 16) > int("0x1900", 16) and int(hexxspeed, 16) > int("0x2900", 16):
+            hexxspeed = "0x2900"
 
 
 def fillnull(hexvalue):
