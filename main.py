@@ -32,6 +32,7 @@ hexxpos = "0x0000"
 hexypos = "0x0000"
 on_ground = False
 a_already_pressed = False
+player_direction_is_right = True
 debugging = False
 
 
@@ -87,8 +88,10 @@ def x_physics(pressed_key, in_air):
 
     global hexxspeed
     global beforejumpxspeed
+    global player_direction_is_right
 
     if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and not pressed_key[pygame.K_j] and not in_air:
+        player_direction_is_right = True
         if int(hexxspeed, 16) >= 0:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
             if int(hexxspeed, 16) > int("0x1900", 16):
@@ -97,6 +100,7 @@ def x_physics(pressed_key, in_air):
             hexxspeed = hex(int(hexxspeed, 16) + int("0x01a0", 16))
 
     elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and not pressed_key[pygame.K_j] and not in_air:
+        player_direction_is_right = False
         if int(hexxspeed, 16) <= 0:
             hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
             if int(hexxspeed, 16) < int("-0x1900", 16):
@@ -119,36 +123,49 @@ def x_physics(pressed_key, in_air):
 
     if in_air:
 
-        if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and int(hexxspeed, 16) >= int("0x1900", 16):
+        # pressing D, going forward
+        if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and \
+                int(hexxspeed, 16) >= int("0x1900", 16) and player_direction_is_right:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x00e4", 16))
         elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and \
-                int("0x0", 16) <= int(hexxspeed, 16) < int("0x1900", 16):
+                int("0x0", 16) <= int(hexxspeed, 16) < int("0x1900", 16) and player_direction_is_right:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
 
-        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and int(hexxspeed, 16) <= int("-0x1900", 16):
+        # pressing A, going forward
+        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and \
+                int(hexxspeed, 16) <= int("-0x1900", 16) and not player_direction_is_right:
             hexxspeed = hex(int(hexxspeed, 16) - int("0x00e4", 16))
         elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and \
-                int("0x0", 16) > int(hexxspeed, 16) > int("-0x1900", 16):
+                int("0x0", 16) > int(hexxspeed, 16) > int("-0x1900", 16) and not player_direction_is_right:
             hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
 
-        elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and int(hexxspeed, 16) <= int("-0x1900", 16):
+        # pressing D, going backward
+        elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and \
+                int(hexxspeed, 16) <= int("-0x1900", 16) and not player_direction_is_right:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x00e4", 16))
         elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and \
-                int(hexxspeed, 16) > int("-0x1900", 16) and int(beforejumpxspeed, 16) <= int("-0x1d00", 16):
+                int(hexxspeed, 16) > int("-0x1900", 16) and int(beforejumpxspeed, 16) <= int("-0x1d00", 16) and \
+                not player_direction_is_right:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x00d0", 16))
         elif pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and \
-                int(hexxspeed, 16) > int("-0x1900", 16) and int(beforejumpxspeed, 16) > int("-0x1d00", 16):
+                int(hexxspeed, 16) > int("-0x1900", 16) and int(beforejumpxspeed, 16) > int("-0x1d00", 16) and \
+                not player_direction_is_right:
             hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
 
-        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and int(hexxspeed, 16) >= int("0x1900", 16):
+        # pressing A, going backward
+        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and \
+                int(hexxspeed, 16) >= int("0x1900", 16) and player_direction_is_right:
             hexxspeed = hex(int(hexxspeed, 16) - int("0x00e4", 16))
         elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and \
-                int(hexxspeed, 16) < int("0x1900", 16) and int(beforejumpxspeed, 16) >= int("0x1d00", 16):
+                int(hexxspeed, 16) < int("0x1900", 16) and int(beforejumpxspeed, 16) >= int("0x1d00", 16) and \
+                player_direction_is_right:
             hexxspeed = hex(int(hexxspeed, 16) - int("0x00d0", 16))
         elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and \
-                int(hexxspeed, 16) < int("0x1900", 16) and int(beforejumpxspeed, 16) < int("0x1d00", 16):
+                int(hexxspeed, 16) < int("0x1900", 16) and int(beforejumpxspeed, 16) < int("0x1d00", 16) and \
+                player_direction_is_right:
             hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
 
+        # walking speed cap & running speed cap
         if int(beforejumpxspeed, 16) >= int("-0x1900", 16) > int(hexxspeed, 16):
             hexxspeed = "-0x1900"
         elif int(beforejumpxspeed, 16) <= int("0x1900", 16) < int(hexxspeed, 16):
