@@ -22,17 +22,19 @@ player = pygame.image.load("resource/player.png")
 size = 16 * pxsize
 xpos = 0
 ypos = 0
+pxxpos = 0
+pxypos = 0
+b_release_frames = 0
 hexxspeed = "0x0000"
 hexyspeed = "0x0000"
 beforejumpxspeed = "0x0000"
 ledgerunoffspeed = "0x0000"
-pxxpos = 0
-pxypos = 0
 hexxpos = "0x0000"
 hexypos = "0x0000"
 on_ground = False
 a_already_pressed = False
 player_direction_is_right = True
+skidding = False
 debugging = False
 
 
@@ -89,37 +91,75 @@ def x_physics(pressed_key, in_air):
     global hexxspeed
     global beforejumpxspeed
     global player_direction_is_right
+    global b_release_frames
+    global skidding
 
-    if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a] and not pressed_key[pygame.K_j] and not in_air:
-        player_direction_is_right = True
-        if int(hexxspeed, 16) >= 0:
-            hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
-            if int(hexxspeed, 16) > int("0x1900", 16):
-                hexxspeed = "0x1900"
-        elif int(hexxspeed, 16) < 0:
-            hexxspeed = hex(int(hexxspeed, 16) + int("0x01a0", 16))
+    if not in_air:
 
-    elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and not pressed_key[pygame.K_j] and not in_air:
-        player_direction_is_right = False
-        if int(hexxspeed, 16) <= 0:
-            hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
-            if int(hexxspeed, 16) < int("-0x1900", 16):
-                hexxspeed = "-0x1900"
-        elif int(hexxspeed, 16) > 0:
-            hexxspeed = hex(int(hexxspeed, 16) - int("0x01a0", 16))
-
-    elif not pressed_key[pygame.K_a] and not pressed_key[pygame.K_d] and not in_air:
-        if not abs(int(hexxspeed, 16)) < int("0x0100", 16):
-            if int(hexxspeed, 16) > 0:
-                hexxspeed = hex(int(hexxspeed, 16) - int("0x00d0", 16))
-            elif int(hexxspeed, 16) < 0:
-                hexxspeed = hex(int(hexxspeed, 16) + int("0x00d0", 16))
-
-    if abs(int(hexxspeed, 16)) < int("0x0130", 16) and not in_air:
         if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a]:
-            hexxspeed = "0x0130"
-        if pressed_key[pygame.K_a] and not pressed_key[pygame.K_d]:
-            hexxspeed = "-0x0130"
+            player_direction_is_right = True
+            if int(hexxspeed, 16) >= 0:
+                if skidding:
+                    skidding = False
+                    if int(hexxspeed, 16) < int("0x0900", 16):
+                        hexxspeed = "0x0900"
+                if pressed_key[pygame.K_j]:
+                    hexxspeed = hex(int(hexxspeed, 16) + int("0x00e4", 16))
+                else:
+                    hexxspeed = hex(int(hexxspeed, 16) + int("0x0098", 16))
+            elif int(hexxspeed, 16) < 0:
+                hexxspeed = hex(int(hexxspeed, 16) + int("0x01a0", 16))
+                skidding = True
+
+        elif pressed_key[pygame.K_a] and not pressed_key[pygame.K_d]:
+            player_direction_is_right = False
+            if int(hexxspeed, 16) <= 0:
+                if skidding:
+                    skidding = False
+                    if int(hexxspeed, 16) > int("-0x0900", 16):
+                        hexxspeed = "-0x0900"
+                if pressed_key[pygame.K_j]:
+                    hexxspeed = hex(int(hexxspeed, 16) - int("0x00e4", 16))
+                else:
+                    hexxspeed = hex(int(hexxspeed, 16) - int("0x0098", 16))
+            elif int(hexxspeed, 16) > 0:
+                hexxspeed = hex(int(hexxspeed, 16) - int("0x01a0", 16))
+                skidding = True
+
+        if not pressed_key[pygame.K_a] and not pressed_key[pygame.K_d]:
+            if not abs(int(hexxspeed, 16)) < int("0x0100", 16):
+                if skidding:
+                    if int(hexxspeed, 16) > 0:
+                        hexxspeed = hex(int(hexxspeed, 16) - int("0x01a0", 16))
+                    else:
+                        hexxspeed = hex(int(hexxspeed, 16) + int("0x01a0", 16))
+                else:
+                    if int(hexxspeed, 16) > 0:
+                        hexxspeed = hex(int(hexxspeed, 16) - int("0x00d0", 16))
+                    else:
+                        hexxspeed = hex(int(hexxspeed, 16) + int("0x00d0", 16))
+
+        if abs(int(hexxspeed, 16)) < int("0x0130", 16):
+            if pressed_key[pygame.K_d] and not pressed_key[pygame.K_a]:
+                hexxspeed = "0x0130"
+            if pressed_key[pygame.K_a] and not pressed_key[pygame.K_d]:
+                hexxspeed = "-0x0130"
+
+        if not pressed_key[pygame.K_j] and abs(int(hexxspeed, 16)) > int("0x1900", 16) and b_release_frames >= 10:
+            if int(hexxspeed, 16) > 0:
+                hexxspeed = "0x1900"
+            else:
+                hexxspeed = "-0x1900"
+        elif pressed_key[pygame.K_j] and abs(int(hexxspeed, 16)) > int("0x2900", 16):
+            if int(hexxspeed, 16) > 0:
+                hexxspeed = "0x2900"
+            else:
+                hexxspeed = "-0x2900"
+
+        if pressed_key[pygame.K_j]:
+            b_release_frames = 0
+        else:
+            b_release_frames = b_release_frames + 1
 
     if in_air:
 
@@ -176,6 +216,7 @@ def x_physics(pressed_key, in_air):
             hexxspeed = "0x2900"
 
 
+# fill meaningless 0s in hexvalue (used for slicing)
 def fillnull(hexvalue):
 
     if len(hexvalue) == 3 and int(hexvalue, 16) > 0:
