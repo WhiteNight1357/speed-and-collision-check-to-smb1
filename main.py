@@ -85,6 +85,9 @@ def y_physics(holding_a):
         if int("0x2500", 16) <= abs(int(beforejumpxspeed, 16)):
             hexyspeed = hex(int(hexyspeed, 16) + int("0x0900", 16))
 
+    if int(hexyspeed, 16) > int("0x4800", 16):
+        hexyspeed = "0x4000"
+
 
 def x_physics(pressed_key, in_air):
 
@@ -262,6 +265,7 @@ while not end:
         a_already_pressed = True
     if keys[pygame.K_k] and not on_ground:
         y_physics(True)
+        a_already_pressed = True
     elif not keys[pygame.K_k] and not on_ground:
         y_physics(False)
         a_already_pressed = False
