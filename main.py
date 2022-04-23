@@ -273,8 +273,8 @@ while not end:
         a_already_pressed = False
 
     if debugging and keys[pygame.K_r]:
-        xpos = 0
-        ypos = 0
+        hexxpos = "0x0000"
+        hexypos = "0x0000"
         xspeed = 0
         yspeed = 0
         hexxspeed = "0x0000"
