@@ -146,7 +146,7 @@ class Player:
 
     def y_physics(self, pressed_key):
 
-        if int(self.hexyspeed, 16) < 0 and pressed_key[pygame.K_a]:
+        if int(self.hexyspeed, 16) < 0 and pressed_key[pygame.K_k]:
             if abs(int(self.beforejumpxspeed, 16)) < int("0x1000", 16):
                 self.hexyspeed = hex(int(self.hexyspeed, 16) + int("0x0200", 16))
             if int("0x1000", 16) <= abs(int(self.beforejumpxspeed, 16)) <= int("0x24ff", 16):
@@ -176,3 +176,42 @@ class Player:
         elif int("0x2500", 16) <= abs(int(self.hexxspeed, 16)):
             self.hexyspeed = "-0x5000"
             self.beforejumpxspeed = self.hexxspeed
+
+    def advance_frame(self, pressed_keys):
+
+        self.x_physics(pressed_keys)
+
+        if not self.on_ground:
+            self.y_physics(pressed_keys)
+
+        if pressed_keys[pygame.K_k] and self.on_ground and not self.a_already_pressed:
+            self.jump()
+            self.a_already_pressed = True
+
+        if pressed_keys[pygame.K_k] and not self.on_ground:
+            self.a_already_pressed = True
+        elif not pressed_keys[pygame.K_k] and not self.on_ground:
+            self.a_already_pressed = False
+        elif not pressed_keys[pygame.K_k]:
+            self.a_already_pressed = False
+
+        # change value
+        self.hexxspeed = hexutil.fillnull(self.hexxspeed)
+        self.hexyspeed = hexutil.fillnull(self.hexyspeed)
+
+        if not int(self.hexxspeed[0:-2], 16) == 0:
+            self.hexxpos = hexutil.hexadd(self.hexxpos, self.hexxspeed)
+        if not int(self.hexyspeed[0:-2], 16) == 0:
+            self.hexypos = hexutil.hexadd(self.hexypos, self.hexyspeed)
+
+        self.hexxpos = hexutil.fillnull(self.hexxpos)
+        self.hexypos = hexutil.fillnull(self.hexypos)
+
+        self.pxxpos = int(self.hexxpos[0:-3], 16)
+        self.pxypos = int(self.hexypos[0:-3], 16)
+
+        if self.pxypos > 180:  # future collision check /w tiles will go here
+            self.hexyspeed = "0x0000"
+            self.on_ground = True
+            self.pxypos = 180
+            self.hexypos = "0xb4000"

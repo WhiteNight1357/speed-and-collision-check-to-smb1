@@ -16,6 +16,10 @@ def draw(surface, xpos, ypos, pixelsize, sprite, palette):
     for row in sprite:
         for item in row:
 
+            if palette[item] is None:
+                # draw transparent pixel (or don't draw the pixel)
+                x += pixelsize
+                continue
             pygame.draw.rect(surface, palette[item], [x, y, pixelsize, pixelsize])
             x += pixelsize
 
