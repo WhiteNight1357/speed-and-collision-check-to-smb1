@@ -1,4 +1,3 @@
-import pygame
 from util import hexutil
 
 
@@ -92,48 +91,48 @@ class Player:
 
         else:
 
-            # pressing D, going forward
+            # pressing right, going forward   ######## fix
             if pressed_key[self.right] and not pressed_key[self.left] and \
                     int(self.hexxspeed, 16) >= int("0x1900", 16) and self.player_direction_is_right:
                 self.hexxspeed = hexutil.hexadd(self.hexxspeed, "0x00e4")
             elif pressed_key[self.right] and not pressed_key[self.left] and \
-                    int("0x0", 16) <= int(self.hexxspeed, 16) < int("0x1900", 16) and self.player_direction_is_right:
+                    int(self.hexxspeed, 16) < int("0x1900", 16) and self.player_direction_is_right:
                 self.hexxspeed = hexutil.hexadd(self.hexxspeed, "0x0098")
 
-            # pressing A, going forward
+            # pressing left, going forward   ######## fix
             elif pressed_key[self.left] and not pressed_key[self.right] and \
                     int(self.hexxspeed, 16) <= int("-0x1900", 16) and not self.player_direction_is_right:
-                self.hexxspeed = hex(int(self.hexxspeed, 16) - int("0x00e4", 16))
+                self.hexxspeed = hexutil.hexsub(self.hexxspeed, "0x00e4")
             elif pressed_key[self.left] and not pressed_key[self.right] and \
-                    int("0x0", 16) > int(self.hexxspeed, 16) > int("-0x1900", 16) and \
+                    int(self.hexxspeed, 16) > int("-0x1900", 16) and \
                     not self.player_direction_is_right:
-                self.hexxspeed = hex(int(self.hexxspeed, 16) - int("0x0098", 16))
+                self.hexxspeed = hexutil.hexsub(self.hexxspeed, "0x0098")
 
-            # pressing D, going backward
+            # pressing right, going backward
             elif pressed_key[self.right] and not pressed_key[self.left] and \
                     int(self.hexxspeed, 16) <= int("-0x1900", 16) and not self.player_direction_is_right:
-                self.hexxspeed = hex(int(self.hexxspeed, 16) + int("0x00e4", 16))
+                self.hexxspeed = hexutil.hexadd(self.hexxspeed, "0x00e4")
             elif pressed_key[self.right] and not pressed_key[self.left] and \
                     int(self.hexxspeed, 16) > int("-0x1900", 16) and \
                     int(self.beforejumpxspeed, 16) <= int("-0x1d00", 16) and not self.player_direction_is_right:
-                self.hexxspeed = hex(int(self.hexxspeed, 16) + int("0x00d0", 16))
+                self.hexxspeed = hexutil.hexadd(self.hexxspeed, "0x00d0")
             elif pressed_key[self.right] and not pressed_key[self.left] and \
                     int(self.hexxspeed, 16) > int("-0x1900", 16) and \
                     int(self.beforejumpxspeed, 16) > int("-0x1d00", 16) and not self.player_direction_is_right:
-                self.hexxspeed = hex(int(self.hexxspeed, 16) + int("0x0098", 16))
+                self.hexxspeed = hexutil.hexadd(self.hexxspeed, "0x0098")
 
-            # pressing A, going backward
+            # pressing left, going backward
             elif pressed_key[self.left] and not pressed_key[self.right] and \
                     int(self.hexxspeed, 16) >= int("0x1900", 16) and self.player_direction_is_right:
-                self.hexxspeed = hex(int(self.hexxspeed, 16) - int("0x00e4", 16))
+                self.hexxspeed = hexutil.hexsub(self.hexxspeed, "0x00e4")
             elif pressed_key[self.left] and not pressed_key[self.right] and \
                     int(self.hexxspeed, 16) < int("0x1900", 16) and \
                     int(self.beforejumpxspeed, 16) >= int("0x1d00", 16) and self.player_direction_is_right:
-                self.hexxspeed = hex(int(self.hexxspeed, 16) - int("0x00d0", 16))
+                self.hexxspeed = hexutil.hexsub(self.hexxspeed, "0x00d0")
             elif pressed_key[self.left] and not pressed_key[self.right] and \
                     int(self.hexxspeed, 16) < int("0x1900", 16) and \
                     int(self.beforejumpxspeed, 16) < int("0x1d00", 16) and self.player_direction_is_right:
-                self.hexxspeed = hex(int(self.hexxspeed, 16) - int("0x0098", 16))
+                self.hexxspeed = hexutil.hexsub(self.hexxspeed, "0x0098")
 
             # walking speed cap & running speed cap
             if int(self.beforejumpxspeed, 16) >= int("-0x1900", 16) > int(self.hexxspeed, 16):

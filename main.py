@@ -26,7 +26,7 @@ def printtext(msg, color=BLACK, pos=(50, 50)):
 
 
 mario = pygame.image.load("resource/player.png")
-player = player.Player()
+player = player.Player(left=pygame.K_a, right=pygame.K_d, up=pygame.K_w, down=pygame.K_s, a=pygame.K_k, b=pygame.K_j)
 while not end:
 
     # set framerate
