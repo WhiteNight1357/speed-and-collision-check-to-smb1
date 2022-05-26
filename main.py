@@ -12,6 +12,8 @@ font = pygame.font.SysFont("consolas", 20)
 
 pygame.display.set_caption("pysmb1")
 
+campos = 0
+
 clock = pygame.time.Clock()
 end = False
 debugging = False
@@ -47,21 +49,26 @@ while not end:
 
     player.advance_frame(keys)
 
+    while player.pxxpos - campos > 116:
+        campos += 1
+
     # draw background
     screen.fill([227, 255, 250])
 
     # print debug info
     if debugging:
-        printtext("pxxpos: " + str(player.pxxpos), 'BLACK', (50, 50))
-        printtext("pxypos: " + str(player.pxypos), 'BLACK', (50, 70))
-        printtext("hexxpos: " + player.hexxpos, 'BLACK', (50, 90))
-        printtext("hexypos: " + player.hexypos, 'BLACK', (50, 110))
-        printtext("hexxspeed: " + player.hexxspeed, 'BLACK', (50, 130))
-        printtext("hexyspeed: " + player.hexyspeed, 'BLACK', (50, 150))
+        printtext("pxxpos: " + str(player.pxxpos), BLACK, (50, 50))
+        printtext("pxypos: " + str(player.pxypos), BLACK, (50, 70))
+        printtext("hexxpos: " + player.hexxpos, BLACK, (50, 90))
+        printtext("hexypos: " + player.hexypos, BLACK, (50, 110))
+        printtext("hexxspeed: " + player.hexxspeed, BLACK, (50, 130))
+        printtext("hexyspeed: " + player.hexyspeed, BLACK, (50, 150))
+        printtext("oncampxxpos: " + str(player.pxxpos - campos), BLACK, (250, 50))
 
     # draw player
-    screen.blit(mario, (player.pxxpos * pxsize, player.pxypos * pxsize))
+    screen.blit(mario, ((player.pxxpos - campos) * pxsize, player.pxypos * pxsize))
 
     pygame.display.flip()
 
 pygame.quit()
+exit(0)
