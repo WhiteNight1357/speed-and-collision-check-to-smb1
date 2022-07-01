@@ -1,5 +1,6 @@
 import pygame
 import player
+import tile
 
 pygame.init()
 
@@ -56,6 +57,7 @@ while not end:
 
     # draw background
     screen.fill([227, 255, 250])
+    tile.tile_draw("0x11", campos, screen, pxsize)
 
     # print debug info
     if debugging:
