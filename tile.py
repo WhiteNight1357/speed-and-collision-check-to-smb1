@@ -1,5 +1,8 @@
-from util import draw
-import lists
+import resources
+
+
+def load(pxsize):
+    resources.load(pxsize)
 
 
 def tile_draw(level, campos, surface, pxsize):
@@ -9,7 +12,7 @@ def tile_draw(level, campos, surface, pxsize):
     listypos = 0
 
     if level == "0x11":
-        level = lists.level1_1
+        level = resources.level1_1
 
     for row in level:
         for _ in row:
@@ -18,9 +21,10 @@ def tile_draw(level, campos, surface, pxsize):
                 xpos += 16 * pxsize
                 listxpos += 1
                 continue
-            draw.draw(surface, xpos - campos, ypos, pxsize, lists.tilespritesheet[tile], lists.tilepalette[tile])
+            surface.blit(resources.tileset[tile], (xpos - campos, ypos))
             xpos += 16 * pxsize
             listxpos += 1
         ypos += 16 * pxsize
+        xpos = 0
         listypos += 1
         listxpos = 0

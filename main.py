@@ -10,6 +10,7 @@ pxsize = 2
 size = [256 * pxsize, 240 * pxsize]
 screen = pygame.display.set_mode(size)
 font = pygame.font.SysFont("consolas", 20)
+tile.load(pxsize)
 
 pygame.display.set_caption("pysmb1")
 
