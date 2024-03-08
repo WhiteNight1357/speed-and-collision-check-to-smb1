@@ -45,6 +45,8 @@ while not end:
                 debugging = True
             elif event.key == pygame.K_F1 and debugging:
                 debugging = False
+            if event.key == pygame>K_ESC:
+                end = True
 
     # get keyboard input
     keys = pygame.key.get_pressed()
