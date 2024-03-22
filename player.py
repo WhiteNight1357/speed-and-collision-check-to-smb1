@@ -219,6 +219,7 @@ class Player:
 
     def collision_check(self, collisionrect, campos, pxsize):
 
+        # reference: https://pbs.twimg.com/media/FGT7WjnVcAEBpBz?format=jpg&name=large
         oncamx = (self.pxxpos - campos) * pxsize
         oncamy = self.pxypos * pxsize
 
