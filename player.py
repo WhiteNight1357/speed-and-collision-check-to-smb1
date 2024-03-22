@@ -217,15 +217,22 @@ class Player:
         self.pxxpos = int(self.hexxpos[0:-3], 16)
         self.pxypos = int(self.hexypos[0:-3], 16)
 
-    def collision_check(self, campos):
+    def collision_check(self, collisionrect, campos, pxsize):
+
+        oncamx = (self.pxxpos - campos) * pxsize
+        oncamy = self.pxypos * pxsize
+
+        if int(self.hexyspeed, 16) <= 0 and collisionrect.collidepoint(oncamx + 8 * pxsize, oncamy):
+            self.hexyspeed = "0x1" + self.hexyspeed[-3:]
 
         if self.pxypos > 180:  # future collision check /w tiles will go here
             self.hexyspeed = "0x0000"
             self.on_ground = True
-            self.pxypos = 180
             self.hexypos = "0xb4000"
 
         if self.pxxpos < campos:
             self.hexxspeed = "0x0000"
-            self.pxxpos = campos
             self.hexxpos = hex(campos) + self.hexxpos[-3:]
+
+        self.pxxpos = int(self.hexxpos[0:-3], 16)
+        self.pxypos = int(self.hexypos[0:-3], 16)

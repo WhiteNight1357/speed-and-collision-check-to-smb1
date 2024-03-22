@@ -56,11 +56,10 @@ while not end:
     while player.pxxpos - campos > 116:
         campos += 1
 
-    player.collision_check(campos)
-
     # draw background
     screen.fill([227, 255, 250])
-    tile.tile_draw("0x11", campos, screen, pxsize)
+    for collision in tile.tile_draw("0x11", campos, screen, pxsize):
+        player.collision_check(collision, campos, pxsize)
 
     # print debug info
     if debugging:
