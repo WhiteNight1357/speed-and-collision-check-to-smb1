@@ -187,9 +187,7 @@ class Player:
     def advance_frame(self, pressed_keys):
 
         self.x_physics(pressed_keys)
-
-        if not self.on_ground:
-            self.y_physics(pressed_keys)
+        self.y_physics(pressed_keys)
 
         if pressed_keys[self.a] and self.on_ground and not self.a_already_pressed:
             self.jump()
