@@ -223,8 +223,20 @@ class Player:
         oncamx = (self.pxxpos - campos) * pxsize
         oncamy = self.pxypos * pxsize
 
-        if int(self.hexyspeed, 16) <= 0 and collisionrect.collidepoint(oncamx + 8 * pxsize, oncamy):
+        if int(self.hexyspeed, 16) <= 0 and \
+                collisionrect.collidepoint(oncamx + 8 * pxsize, oncamy + 2 * pxsize):
             self.hexyspeed = "0x1" + self.hexyspeed[-3:]
+
+        if int(self.hexyspeed, 16) >= 0 and \
+                (collisionrect.collidepoint(oncamx + 3 * pxsize, oncamy + 16 * pxsize) or \
+                collisionrect.collidepoint(oncamx + 12 * pxsize, oncamy + 16 * pxsize)):
+            if oncamy % (16 * pxsize) <= 4:
+                self.hexypos = self.hexypos[:-4] + "0" + self.hexypos[-3:]
+                self.hexyspeed = "0x0000"
+                self.on_ground = True
+            else:
+                pass
+
 
         if self.pxypos > 180:  # future collision check /w tiles will go here
             self.hexyspeed = "0x0000"
