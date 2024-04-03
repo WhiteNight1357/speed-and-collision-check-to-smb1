@@ -19,6 +19,7 @@ campos = 0
 clock = pygame.time.Clock()
 end = False
 debugging = False
+frameadvance = False
 
 
 def printtext(msg, color=BLACK, pos=(50, 50)):
@@ -45,13 +46,21 @@ while not end:
                 debugging = True
             elif event.key == pygame.K_F1 and debugging:
                 debugging = False
+            if debugging and event.key == pygame.K_F2 and not frameadvance:
+                frameadvance = True
+            elif debugging and event.key == pygame.K_F2 and frameadvance:
+                frameadvance = False
+            if event.key == pygame.K_SPACE and frameadvance:
+                keys = pygame.key.get_pressed()
+                player.advance_frame(keys)
             if event.key == pygame.K_ESCAPE:
                 end = True
 
     # get keyboard input
     keys = pygame.key.get_pressed()
 
-    player.advance_frame(keys)
+    if not frameadvance:
+        player.advance_frame(keys)
 
     while player.pxxpos - campos > 116:
         campos += 1
@@ -70,6 +79,8 @@ while not end:
         printtext("hexxspeed: " + player.hexxspeed, BLACK, (50, 130))
         printtext("hexyspeed: " + player.hexyspeed, BLACK, (50, 150))
         printtext("oncampxxpos: " + str(player.pxxpos - campos), BLACK, (250, 50))
+        printtext("frameadvace: " + str(frameadvance), BLACK, (250, 70))
+
 
     # draw player
     screen.blit(mario, ((player.pxxpos - campos) * pxsize, player.pxypos * pxsize))
